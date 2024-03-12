@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.calculator.ui.theme.CalculatorTheme
 
@@ -22,7 +23,12 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             CalculatorTheme {
-                val viewModel = viewModel<CalculatorViewModel>()
+                //val viewModel = viewModel<CalculatorViewModel>()
+
+                val dao: CalculatorDao = CalculatorDatabase.getDatabase(this).CalculatorDao()
+                val factory = CalculatorViewModelFactory(dao)
+                val viewModel = ViewModelProvider(this, factory)[CalculatorViewModel::class.java]
+
                 val state = viewModel.state
                 val buttonSpacing = 8.dp
                 Calculator(state = state,

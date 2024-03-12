@@ -1,11 +1,15 @@
 package com.example.calculator
 
+import android.text.Spannable.Factory
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
 
-class CalculatorViewModel: ViewModel() {
+class CalculatorViewModel(private val dao: CalculatorDao): ViewModel() {
 
     var state by mutableStateOf(CalculatorState())
         private set
@@ -70,10 +74,24 @@ class CalculatorViewModel: ViewModel() {
                 is CalculatorOperation.Division -> number1 / number2
                 null -> return
             }
+            val operation = when (state.operation) {
+                is CalculatorOperation.Add -> "+"
+                is CalculatorOperation.Subtract -> "-"
+                is CalculatorOperation.Multiply -> "*"
+                is CalculatorOperation.Division -> "/"
+                null -> return
+            }
+            val item = "$number1  ${operation}  $number2 = $result"
+            val it = Item(result = item)
+            viewModelScope.launch {
+                dao.insert(it)
+            }
             state = state.copy(number1 = result.toString() ,
                 operation = null , number2 = "")
         }
 
     }
+
+
 
 }
