@@ -1,7 +1,9 @@
-package com.example.calculator
+package com.example.calculator.factory
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.example.calculator.dao.CalculatorDao
+import com.example.calculator.CalculatorViewModel
 
 class CalculatorViewModelFactory(private val dao: CalculatorDao) : ViewModelProvider.Factory {
 

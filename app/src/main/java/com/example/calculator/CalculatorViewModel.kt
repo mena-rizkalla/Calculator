@@ -1,12 +1,13 @@
 package com.example.calculator
 
-import android.text.Spannable.Factory
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.example.calculator.dao.CalculatorDao
+import com.example.calculator.model.CalculatorState
+import com.example.calculator.model.Item
 import kotlinx.coroutines.launch
 
 class CalculatorViewModel(private val dao: CalculatorDao): ViewModel() {

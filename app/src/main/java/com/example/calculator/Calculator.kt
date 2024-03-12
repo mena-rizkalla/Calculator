@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.magnifier
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -20,13 +19,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.calculator.model.CalculatorState
 
 @Composable
 fun Calculator(
     state: CalculatorState,
     modifier: Modifier = Modifier,
     buttonSpacing: Dp = 8.dp,
-   onAction: (CalculatorActions) -> Unit
+    onAction: (CalculatorActions) -> Unit
 ){
 
     Box(modifier = Modifier.fillMaxSize().background(Color.Gray).padding(16.dp).then(modifier)) {

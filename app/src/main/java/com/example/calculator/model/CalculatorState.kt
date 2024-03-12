@@ -1,4 +1,6 @@
-package com.example.calculator
+package com.example.calculator.model
+
+import com.example.calculator.CalculatorOperation
 
 data class CalculatorState(
     val number1: String = "",

@@ -1,9 +1,11 @@
-package com.example.calculator
+package com.example.calculator.database
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.example.calculator.dao.CalculatorDao
+import com.example.calculator.model.Item
 
 @Database(entities = [Item::class] , version = 1 , exportSchema = false)
 abstract class CalculatorDatabase : RoomDatabase() {
