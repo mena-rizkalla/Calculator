@@ -3,7 +3,9 @@ package com.example.calculator
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import com.example.calculator.dao.CalculatorDao
 import com.example.calculator.model.CalculatorState
@@ -94,5 +96,12 @@ class CalculatorViewModel(private val dao: CalculatorDao): ViewModel() {
     }
 
 
+    fun history() : LiveData<List<Item>>{
+        return liveData {
+            dao.calculations().collect { list ->
+                emit(list)
+            }
+        }
+    }
 
 }

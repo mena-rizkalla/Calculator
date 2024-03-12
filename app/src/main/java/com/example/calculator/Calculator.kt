@@ -1,5 +1,6 @@
 package com.example.calculator
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -11,6 +12,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -20,16 +25,26 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.calculator.model.CalculatorState
+import com.example.calculator.model.Item
 
 @Composable
 fun Calculator(
     state: CalculatorState,
     modifier: Modifier = Modifier,
     buttonSpacing: Dp = 8.dp,
-    onAction: (CalculatorActions) -> Unit
+    onAction: (CalculatorActions) -> Unit,
+    viewModel: CalculatorViewModel
 ){
 
-    Box(modifier = Modifier.fillMaxSize().background(Color.Gray).padding(16.dp).then(modifier)) {
+    val isCardOpen = remember { mutableStateOf(false) }
+    BackHandler(enabled = isCardOpen.value) {
+        isCardOpen.value = false
+    }
+    Box(modifier = Modifier
+        .fillMaxSize()
+        .background(Color.Gray)
+        .padding(16.dp)
+        .then(modifier)) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -48,8 +63,6 @@ fun Calculator(
                 maxLines = 2
             )
 
-
-
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(buttonSpacing)
@@ -63,14 +76,16 @@ fun Calculator(
                         onAction(CalculatorActions.Clear)
                     })
 
-                CalculatorButton(symbol = "Del",
+
+                CalculatorButton(symbol = "History",
                     modifier = Modifier
                         .background(Color.LightGray)
                         .aspectRatio(1f)
                         .weight(1f),
                     onClick = {
-                        onAction(CalculatorActions.Delete)
-                    })
+                        isCardOpen.value = !isCardOpen.value
+                    }
+                )
 
                 CalculatorButton(symbol = "/",
                     modifier = Modifier
@@ -80,6 +95,12 @@ fun Calculator(
                     onClick = {
                         onAction(CalculatorActions.Operation(CalculatorOperation.Division))
                     })
+            }
+            if (isCardOpen.value) {
+                val list1 = listOf(Item(result = "6 + 76 = 6") , Item(result = "9 + 76 = 9") , Item(result = "9 + 76 = 9") , Item(result = "9 + 76 = 9") , Item(result = "9 + 76 = 9"))
+                val list by viewModel.history().observeAsState(initial = emptyList())
+                ElevatedCardE(list)
+
             }
 
             Row(
